@@ -1,4 +1,4 @@
-from openpyxl import workbook
+from openpyxl import Workbook
 from openpyxl import load_workbook
 
 def abrirPlanilha(nomeArquivo):
@@ -14,11 +14,16 @@ def separarLinhas(matrizPlanilha, colunaVer):
             categorias.append(linha[colunaVer])
             competidores.append([])
         competidores[categorias.index(linha[colunaVer])].append(linha)
+    linha = 1
     for categoria in competidores:
-        planilhaNova = workbook.Workbook()
+        planilhaNova = Workbook()
         planilhaNovaAtiva = planilhaNova.active()
-        for competidor in competidores:
-            planilhaNovaAtiva.append(competidor)
+        for competidor in categoria:
+            coluna = 1
+            for info in competidor:
+                planilhaNovaAtiva.cell(row=linha, column=coluna).value = info
+                coluna += 1
         nomeArq = categorias[competidores.index(categoria)] + ".xlsx"
         print(nomeArq+"criado!")
         planilhaNova.save(nomeArq)
+        linha += 1
